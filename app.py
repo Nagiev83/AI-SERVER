@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from openai import OpenAI
+import os
 
 app = Flask(__name__)
 
+# Используем переменную окружения для API ключа
 client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
 )
@@ -28,4 +30,5 @@ def ask():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=10000)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
