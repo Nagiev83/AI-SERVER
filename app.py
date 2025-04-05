@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from openai import OpenAI
 import os
+import json
 
 app = Flask(__name__)
 
@@ -24,11 +25,18 @@ def ask():
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": user_message}]
         )
-        ai_message = response.choices[0].message.content
-        return jsonify({"reply": ai_message})
+        ai_message = response.choices[0].message.content.strip()
+
+        return app.response_class(
+            response=json.dumps({"reply": ai_message}, ensure_ascii=False),
+            mimetype='application/json'
+        )
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return app.response_class(
+            response=json.dumps({"error": str(e)}, ensure_ascii=False),
+            mimetype='application/json'
+        ), 500
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
