@@ -4,7 +4,7 @@ from openai import OpenAI
 app = Flask(__name__)
 
 client = OpenAI(
-    api_key="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"
+    api_key="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"
 )
 
 @app.route("/")
